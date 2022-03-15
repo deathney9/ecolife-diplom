@@ -1,0 +1,41 @@
+<div class="page">
+  <slot></slot>
+  <div class="page__articles d-flex flex-wrap mt-5">
+    <div v-for="article in articles" class="page__articles-item-wrapper">
+      <div
+        class="page__articles-item cursor-pointer"
+        :key="`${article.id}_${article.name}`"
+        @click="$router.push({name: nameSection, params: {id:article.id}})"
+      >
+        <div class="page__articles-img-wrapper">
+          <img
+            v-if="article.files"
+            class="page__articles-item-img"
+            :src="getPhoto(article.files[0])"
+            alt="image-article"
+          />
+          <img
+            v-else
+            class="page__articles-item-img"
+            src="../../../assets/no-photo.jpg"
+            alt="image-article"
+          />
+        </div>
+        <div
+          class="page__articles-item-title-wrapper d-flex align-center cursor-pointer mt-1"
+        >
+          <span class="page__articles-item-title">{{ article.name }}</span>
+        </div>
+      </div>
+    </div>
+    <h3 class="mt-5" v-if="!articles.length">Здесь пока что нет статей!</h3>
+  </div>
+  <b-toast
+    id="infoToast"
+    toaster="b-toaster-top-full custom-toast"
+    :variant="toastInfo.isSuccess ? 'success' : 'error'"
+    auto-hide-delay="2500"
+  >
+    <template v-slot:toast-title>{{toastInfo.message}}</template>
+  </b-toast>
+</div>

@@ -1,0 +1,69 @@
+<div class="search d-flex align-center">
+  <div class="search__field">
+    <v-text-field
+      placeholder="Поиск"
+      append-icon="mdi-magnify"
+      v-model="search"
+      class="search__field-input"
+      @click="getSearchArticles"
+      @change="getSearchArticles"
+    >
+    </v-text-field>
+    <div class="search__result" v-if="searchArticles.length">
+      <v-list color="#F7F7F9">
+        <v-list-item-group>
+          <v-list-item
+            three-line
+            v-for="article in searchArticles"
+            :key="`${article.id}_${article.name}`"
+            @click="routeToArticle(article.id, article.sectionId)"
+          >
+            <v-list-item-avatar>
+              <img
+                v-if="article.files"
+                :src="getPhoto(article.files[0])"
+                alt="article-photo"
+              />
+              <img
+                v-else
+                src="../../../assets/no-photo.jpg"
+                alt="article-photo"
+              />
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>{{article.name}}</v-list-item-title>
+              <v-list-item-subtitle
+                >{{sections[article.sectionId]}}</v-list-item-subtitle
+              >
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </div>
+  </div>
+  <div
+    class="search__profile-block d-flex flex-column align-center justify-center"
+    v-if="USER.id"
+  >
+    <div class="d-flex align-center justify-center w-100">
+      <img
+        v-if="!modifiedUser.photo"
+        class="sidebar__profile-block-img"
+        src="../../../assets/no-photo.jpg"
+        alt="user-photo"
+      />
+      <img
+        v-else
+        class="sidebar__profile-block-img"
+        :src="modifiedUser.photo"
+        alt="user-photo"
+      />
+      <div class="d-flex flex-column ml-2 w-100">
+        <span class="sidebar__profile-block-name"
+          >{{modifiedUser.firstname}} {{modifiedUser.lastname}}</span
+        >
+        <span class="sidebar__profile-block-email">{{modifiedUser.email}}</span>
+      </div>
+    </div>
+  </div>
+</div>

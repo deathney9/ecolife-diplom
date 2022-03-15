@@ -1,0 +1,15 @@
+//variables
+$greenBorder: #537f8c; //#628272;
+$greenHover: #83b2c0; //#4f7563;
+$greenFont: #7f99be; //#83aaa9;
+$greenShadow: #7f99be; //94bda8;
+$background: #c9dcf5; //#f7f7f9;
+$greyColor: #f7f7f9; //#a0a0a0;
+$greyBorder: #f7f7f9; //#c2c2c2;
+$svgWhite: "fff";
+
+//import
+@import "./icons.scss", "components/sidebar.scss", "components/template.scss",
+  "components/search.scss", "components/templatePage.scss",
+  "components/profilePage.scss", "components/viewPage.scss",
+  "components/loginPage.scss", "components/adminPage.scss";

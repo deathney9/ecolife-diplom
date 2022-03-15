@@ -1,0 +1,53 @@
+<div class="editArticle">
+  <b-row>
+    <b-col cols="2">
+      <span class="mr-3">Добавить изображение: </span>
+    </b-col>
+    <b-col cols="10" lg="6">
+      <v-file-input
+        class="image-file"
+        accept=".jpg*,.jpeg*,.png*"
+        v-model="photoCreateForm.url"
+        show-size
+        multiple
+        label="Добавить изображение"
+      >
+      </v-file-input>
+    </b-col>
+    <div class="w-100"></div>
+    <template v-if="photo.id">
+      <b-col cols="2">
+        <span class="mr-3">Удалить изображение: </span>
+      </b-col>
+      <b-col cols="10" lg="6">
+        <div class="d-flex">
+          <div
+            :key="img"
+            class="delete-image__wrapper cursor-pointer"
+            @click="reqDeletePhoto(img)"
+          >
+            <img
+              class="delete-image mr-5"
+              :src="modifiedUserPhoto(img)"
+              alt="article-photo"
+            />
+            <i class="fa fa-close delete-icon"></i>
+          </div>
+        </div>
+      </b-col>
+      <div class="w-100"></div>
+    </template>
+    <div class="d-flex align-center mt-5">
+      <v-btn outlined @click="reqCreateArticle" v-else>Создать</v-btn>
+      <v-btn text>Отмена</v-btn>
+    </div>
+  </b-row>
+  <b-toast
+    id="infoToast"
+    toaster="b-toaster-top-full custom-toast"
+    :variant="toastInfo.isSuccess ? 'success' : 'error'"
+    auto-hide-delay="2500"
+  >
+    <template v-slot:toast-title>{{toastInfo.message}}</template>
+  </b-toast>
+</div>
