@@ -1,10 +1,11 @@
-const Router = require("express");
+const Router = require('express');
 const router = new Router();
-const videoController = require("../controller/videoController");
-const checkRole = require("../middleware/checkRoleMiddleware");
+const photoController = require('../controller/photoController');
+const checkRole = require('../middleware/checkRoleMiddleware');
 
-router.post("/", checkRole("ADMIN"), videoController.addVideo);
-router.get("/", videoController.getAll);
-router.delete("/:videoId", checkRole("ADMIN"), videoController.delete);
+router.post('/', checkRole('ADMIN'), photoController.addPhoto);
+router.get('/', photoController.getAll);
+router.get('/:photoId', photoController.getById);
+router.delete('/:photoId', checkRole('ADMIN'), photoController.delete);
 
 module.exports = router;

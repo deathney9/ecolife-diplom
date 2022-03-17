@@ -104,27 +104,18 @@
       </template>
       <v-list-item
         class="list-item cursor-pointer"
-        @click="dialogVideos = true"
+        @click="dialogPhotos = true"
       >
         <v-list-item-title> Добавить фото </v-list-item-title>
       </v-list-item>
       <div
-        v-for="video in videos"
+        v-for="photo in photos"
         class="page__articles-item-wrapper d-flex align-center"
       >
-        <iframe
-          width="300"
-          height="200"
-          :key="`${video.id}_${video.url}`"
-          :src="`${video.url}`"
-          title="YouTube video player"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        >
-        </iframe>
+       <img class="view__comments-img" :src="modifiedUserPhoto(photo.url)"/>
         <i
           class="fa fa-trash ml-5"
-          @click.stop="[dialogConfirmVideos = true, selectVideo(video)]"
+          @click.stop="[dialogConfirmPhotos = true, selectPhoto(photo)]"
         ></i>
       </div>
     </v-list-group>
@@ -180,6 +171,11 @@
     :id="selectedVideo.id"
   >
   </modalConfirm>
+  <modalConfirm
+  :dialogVisible="dialogConfirmPhotos"
+  :modalFunction="reqDeletePhoto"
+  :id="selectedPhoto.id">
+</modalConfirm>
   <v-dialog
     v-model="dialogArticle"
     hide-overlay
@@ -210,4 +206,18 @@
       <videoForm></videoForm>
     </div>
   </v-dialog>
+  <v-dialog
+  v-model="dialogPhotos"
+  hide-overlay
+  transition="dialog-bottom-transition"
+  width="800"
+>
+  <div class="dialog-wrapper">
+    <div class="dialog-wrapper__header d-flex align-center">
+      <h3>Список фото</h3>
+      <i class="fa fa-close ml-auto" @click="closeDialog('dialogPhotos')"></i>
+    </div>
+    <photoForm></photoForm>  
+  </div>
+</v-dialog>
 </div>

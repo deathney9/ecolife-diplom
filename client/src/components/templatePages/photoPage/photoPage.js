@@ -1,31 +1,28 @@
 //TODO
 
 export default {
-  name: "VideoPage",
+  name: 'PhotoPage',
   components: {},
   props: {},
   data() {
     return {
-      videos: [],
+      photos: [],
     };
   },
-  created() {},
   mounted() {
-    this.reqGetAllVideos();
+    this.reqGetAllPhotos();
   },
-  watch: {},
-  computed: {},
   methods: {
-    reqGetAllVideos() {
+    reqGetAllPhotos() {
       this.$http({
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        url: `http://localhost:5000/api/video`,
+        url: `http://localhost:5000/api/photo`,
       }).then((res) => {
         if (res.status === 200) {
-          this.videos = res.data;
+          this.photos = res.data;
         }
       });
     },

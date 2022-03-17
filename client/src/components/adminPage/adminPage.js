@@ -1,24 +1,26 @@
-import { mapGetters } from "vuex";
-import templateEditUser from "@/components/templatePages/templateEditUser.vue";
-import { toastMixin } from "@/mixins/toastMixin";
-import modalConfirm from "@/components/common/modal/modalConfirm.vue";
-import templateEditArticle from "@/components/editArticleTemplate.vue";
-import videoForm from "@/components/createVideoForm.vue";
+import { mapGetters } from 'vuex';
+import templateEditUser from '@/components/templatePages/templateEditUser.vue';
+import { toastMixin } from '@/mixins/toastMixin';
+import modalConfirm from '@/components/common/modal/modalConfirm.vue';
+import templateEditArticle from '@/components/editArticleTemplate.vue';
+import videoForm from '@/components/createVideoForm.vue';
+import photoForm from '@/components/createPhotoForm.vue';
 
 export default {
-  name: "AdminPage",
+  name: 'AdminPage',
   components: {
     templateEditUser,
     modalConfirm,
     templateEditArticle,
     videoForm,
+    photoForm,
   },
   mixins: [toastMixin],
   data() {
     return {
       newArticle: {
-        name: "test",
-        description: "",
+        name: 'test',
+        description: '',
         sectionId: 2,
       },
       users: [],
@@ -33,40 +35,51 @@ export default {
       selectedVideo: {},
       dialogVideos: false,
       dialogConfirmVideos: false,
+      photos: [],
+      selectedPhoto: {},
+      dialogPhotos: false,
+      dialogConfirmPhotos: false,
     };
   },
   created() {
     this.reqGetAllUsers();
     this.reqGetAllArticles();
     this.reqGetAllVideos();
+    this.reqGetAllPhotos();
   },
   mounted() {
-    this.$root.$on("hideModalConfirm", (value) => {
+    this.$root.$on('hideModalConfirm', (value) => {
       this.dialogConfirm = value;
       this.dialogConfirmArticle = value;
       this.dialogConfirmVideos = value;
+      this.dialogConfirmPhotos = value;
     });
 
-    this.$root.$on("closeArticleDialog", (value) => {
+    this.$root.$on('closeArticleDialog', (value) => {
       this.dialogArticle = value;
       this.reqGetAllArticles();
     });
 
-    this.$root.$on("closeVideoDialog", (value) => {
+    this.$root.$on('closeVideoDialog', (value) => {
       this.dialogVideos = value;
       this.reqGetAllVideos();
+    });
+
+    this.$root.$on('closePhotoDialog', (value) => {
+      this.dialogPhotos = value;
+      this.reqGetAllPhotos();
     });
   },
   watch: {},
   computed: {
-    ...mapGetters(["USER"]),
+    ...mapGetters(['USER']),
   },
   methods: {
     reqGetAllUsers() {
       this.$http({
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         url: `http://localhost:5000/api/user`,
       }).then((res) => {
@@ -91,9 +104,9 @@ export default {
 
     reqDeleteUser(userId) {
       this.$http({
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         url: `http://localhost:5000/api/user/${userId}`,
       }).then((res) => {
@@ -105,9 +118,9 @@ export default {
 
     reqGetAllArticles() {
       this.$http({
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         url: `http://localhost:5000/api/article/all`,
       }).then((res) => {
@@ -119,9 +132,9 @@ export default {
 
     reqDeleteArticle(articleId) {
       this.$http({
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.token}`,
         },
         url: `http://localhost:5000/api/article/${articleId}`,
@@ -134,9 +147,9 @@ export default {
 
     reqGetAllVideos() {
       this.$http({
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.token}`,
         },
         url: `http://localhost:5000/api/video`,
@@ -147,11 +160,41 @@ export default {
       });
     },
 
+    reqGetAllPhotos() {
+      this.$http({
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+        url: `http://localhost:5000/api/photo`,
+      }).then((res) => {
+        if (res.status === 200) {
+          this.photos = res.data;
+        }
+      });
+    },
+
+    reqDeletePhoto(photoId) {
+      this.$http({
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+        url: `http://localhost:5000/api/photo/${photoId}`,
+      }).then((res) => {
+        if (res.status === 200) {
+          this.reqGetAllPhotos();
+        }
+      });
+    },
+
     reqDeleteVideo(videoId) {
       this.$http({
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.token}`,
         },
         url: `http://localhost:5000/api/video/${videoId}`,
@@ -170,14 +213,19 @@ export default {
       this.selectedArticle = article;
     },
 
+    selectPhoto(photo) {
+      this.selectedPhoto = photo;
+    },
+
     openCreateArticleForm() {
       this.selectedArticle = {};
       this.dialogArticle = true;
     },
   },
   beforeDestroy() {
-    this.$root.$off("hideModalConfirm");
-    this.$root.$off("closeArticleDialog");
-    this.$root.$off("closeVideoDialog");
+    this.$root.$off('hideModalConfirm');
+    this.$root.$off('closeArticleDialog');
+    this.$root.$off('closeVideoDialog');
+    this.$root.$off('closePhotoDialog');
   },
 };

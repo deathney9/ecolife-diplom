@@ -1,7 +1,7 @@
-import { toastMixin } from "@/mixins/toastMixin";
+import { toastMixin } from '@/mixins/toastMixin';
 
 export default {
-  name: "PhotoForm",
+  name: 'PhotoForm',
   mixins: [toastMixin],
   props: {},
   data() {
@@ -9,20 +9,22 @@ export default {
       photoCreateForm: {
         sectionId: 1,
       },
+      photo: {},
+      img: {},
     };
   },
   methods: {
-    reqAddPhoto(img, id) {
+    reqCreatePhoto() {
       const data = new FormData();
-      data.append("img", img);
-
+      data.append('img', this.photoCreateForm.img[0]);
+      console.log(this.photoCreateForm.img[0]);
       this.$http({
-        method: "PUT",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${localStorage.token}`,
         },
-        url: `http://localhost:5000/api/article/photo/${id}`,
+        url: `http://localhost:5000/api/photo`,
         data: data,
       }).then((res) => {
         if (res.status === 200) {
